@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKILLIT-AI | Revolutionary UK Recruitment Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'gradient-x': 'gradient-x 3s ease infinite',
+                        'spin-slow': 'spin-slow 20s linear infinite',
+                        'pulse-slow': 'pulse-slow 2s ease-in-out infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'spin-slow': {
+                            'from': { transform: 'rotate(0deg)' },
+                            'to': { transform: 'rotate(360deg)' }
+                        },
+                        'pulse-slow': {
+                            '0%, 100%': { opacity: '0.3' },
+                            '50%': { opacity: '0.8' }
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .bg-gradient-animated {
+            background: linear-gradient(-45deg, #1e40af, #3b82f6, #6366f1, #8b5cf6);
+            background-size: 400% 400%;
+            animation: gradient-x 3s ease infinite;
+        }
+        
+        .floating-element {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .typing-animation {
+            overflow: hidden;
+            border-right: 2px solid #3b82f6;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #3b82f6 }
+        }
+        
+        .auction-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .live-indicator {
+            animation: pulse 1s infinite;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-sm bg-white/90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                        <span class="text-white font-bold text-lg">S</span>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">SKILLIT-AI</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-900 font-medium transition-colors">Sign In</button>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Start Free Trial
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
+        <!-- Animated Background -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-spin-slow"></div>
+            
+            <!-- Floating particles -->
+            <div id="particles" class="absolute inset-0"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="space-y-8">
+                <!-- Trust Indicators -->
+                <div class="flex justify-center space-x-8 mb-8">
+                    <div class="flex flex-col items-center space-y-2 floating-element">
+                        <div class="p-3 rounded-full bg-white/10 backdrop-blur-sm text-green-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xs text-white/80 font-medium">GDPR Compliant</span>
+                    </div>
+                    <div class="flex flex-col items-center space-y-2 floating-element" style="animation-delay: 0.5s;">
+                        <div class="p-3 rounded-full bg-white/10 backdrop-blur-sm text-blue-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xs text-white/80 font-medium">10K+ Users</span>
+                    </div>
+                    <div class="flex flex-col items-center space-y-2 floating-element" style="animation-delay: 1s;">
+                        <div class="p-3 rounded-full bg-white/10 backdrop-blur-sm text-purple-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xs text-white/80 font-medium">94% Success</span>
+                    </div>
+                    <div class="flex flex-col items-center space-y-2 floating-element" style="animation-delay: 1.5s;">
+                        <div class="p-3 rounded-full bg-white/10 backdrop-blur-sm text-orange-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xs text-white/80 font-medium">ISO 27001</span>
+                    </div>
+                </div>
+
+                <!-- Main Heading with Typing Effect -->
+                <div class="space-y-4">
+                    <h1 class="text-5xl md:text-7xl font-bold text-white leading-tight">
+                        <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent animate-gradient-x">
+                            Where Skill & Talent
+                        </span>
+                        <br />
+                        <span class="text-white">Meets Opportunity</span>
+                    </h1>
+
+                    <p class="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
+                        Revolutionary AI conducts rigorous and comprehensive interviews 24/7, providing instant, unbiased
+                        assessments that reveal true potential beyond traditional resumes.
+                    </p>
+                </div>
+
+                <!-- Dynamic UK Stats -->
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 max-w-4xl mx-auto border border-white/20">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="text-center p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-blue-500/20 transition-all duration-500 cursor-pointer" id="stat-1">
+                            <div class="text-3xl md:text-4xl font-bold text-white mb-2" data-target="2800000000">£0</div>
+                            <div class="text-sm text-blue-200 font-medium">UK Recruitment Market</div>
+                        </div>
+                        <div class="text-center p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-blue-500/20 transition-all duration-500 cursor-pointer" id="stat-2">
+                            <div class="text-3xl md:text-4xl font-bold text-white mb-2" data-target="850000">0+</div>
+                            <div class="text-sm text-blue-200 font-medium">Active Job Seekers</div>
+                        </div>
+                        <div class="text-center p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-blue-500/20 transition-all duration-500 cursor-pointer" id="stat-3">
+                            <div class="text-3xl md:text-4xl font-bold text-white mb-2" data-target="42">0 days</div>
+                            <div class="text-sm text-blue-200 font-medium">Average Time to Hire</div>
+                        </div>
+                        <div class="text-center p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-blue-500/20 transition-all duration-500 cursor-pointer" id="stat-4">
+                            <div class="text-3xl md:text-4xl font-bold text-white mb-2" data-target="67">0%</div>
+                            <div class="text-sm text-blue-200 font-medium">Skills Mismatch Rate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
+                    <button onclick="startDemo()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 flex items-center group">
+                        Start Live Demo
+                        <svg class="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </button>
+
+                    <button onclick="playVideo()" class="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg font-semibold rounded-xl backdrop-blur-sm transition-all duration-300 flex items-center group bg-transparent">
+                        <svg class="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m-9-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Watch Demo (2 min)
+                    </button>
+                </div>
+
+                <!-- UK Market Focus Badge -->
+                <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-red-500/20 to-blue-500/20 border border-white/20 rounded-full px-6 py-3 backdrop-blur-sm">
+                    <span class="text-2xl">🇬🇧</span>
+                    <span class="text-white font-medium">Proudly Serving the UK Market</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Auction Demo Section -->
+    <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50" id="demo-section" style="display: none;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    Live Talent Auction <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">in Action</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Watch real-time bidding on top UK talent. AI-matched candidates, transparent pricing, instant hiring decisions.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Live Auction Panel -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Auction Header -->
+                    <div class="border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full live-indicator"></div>
+                                    <span class="font-semibold text-gray-900">LIVE AUCTION</span>
+                                </div>
+                                <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                    <span id="viewers-count">23</span> watching
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-red-600" id="countdown">01:23:45</div>
+                                <div class="text-sm text-gray-600">Time remaining</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Candidate Cards -->
+                    <div class="space-y-4" id="candidates-list">
+                        <!-- Candidates will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Bidding Panel -->
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 border rounded-xl p-6">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <svg class="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            Place Your Bid
+                        </h3>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-1">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Bid Amount (GBP)</label>
+                                <input type="number" id="bid-amount" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg font-semibold" value="76000" min="75000" step="1000">
+                            </div>
+                            <button onclick="placeBid()" class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 px-8 py-3 text-lg font-semibold text-white rounded-lg transition-all duration-300">
+                                Place Bid
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">Minimum bid: £76,000</p>
+                    </div>
+                </div>
+
+                <!-- Activity Feed -->
+                <div class="space-y-6">
+                    <!-- Live Notifications -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 19h6v-2H4v2zM4 15h8v-2H4v2zM4 11h10V9H4v2z"></path>
+                            </svg>
+                            Live Activity
+                        </h3>
+                        <div class="space-y-3 max-h-64 overflow-y-auto" id="activity-feed">
+                            <!-- Activity will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Market Insights -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">UK Market Insights</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Avg. React Developer Salary</span>
+                                <span class="font-semibold">£65,000</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Market Demand</span>
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">High</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Time to Hire</span>
+                                <span class="font-semibold">7 days</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Success Rate</span>
+                                <span class="font-semibold text-green-600">94%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    Revolutionary Features for <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Modern Recruitment</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Discover how SKILLIT-AI transforms the hiring process with cutting-edge technology designed specifically for the UK market.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="inline-flex p-4 rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">AI-Powered Interviews</h3>
+                    <p class="text-gray-600 leading-relaxed">24/7 automated screening with instant, unbiased assessments that reveal true potential beyond traditional resumes.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="inline-flex p-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Talent Auction Platform</h3>
+                    <p class="text-gray-600 leading-relaxed">Dynamic bidding system where employers compete for top talent, ensuring fair market value and transparent pricing.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="inline-flex p-4 rounded-2xl bg-gradient-to-r from-orange-500 to-red-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">UK Compliance & Security</h3>
+                    <p class="text-gray-600 leading-relaxed">Full GDPR compliance, data sovereignty, and integration with UK employment law and regulations.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="inline-flex p-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Precision Skills Matching</h3>
+                    <p class="text-gray-600 leading-relaxed">AI-driven compatibility analysis with 91% success rate, reducing turnover and improving long-term fit.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                Ready to Transform Your <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">Hiring Process?</span>
+            </h2>
+
+            <p class="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8 leading-relaxed">
+                Join leading UK companies already using SKILLIT-AI to revolutionize recruitment. Start your free trial today and experience the future of hiring.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 flex items-center justify-center">
+                    Start Free Trial
+                    <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </button>
+
+                <button class="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg font-semibold rounded-xl backdrop-blur-sm transition-all duration-300 bg-transparent">
+                    Book Demo Call
+                </button>
+            </div>
+
+            <div class="mt-16 inline-flex items-center space-x-2 bg-gradient-to-r from-red-500/20 to-blue-500/20 border border-white/20 rounded-full px-6 py-3 backdrop-blur-sm">
+                <span class="text-2xl">🇬🇧</span>
+                <span class="text-white font-medium">Proudly Built for the UK Market</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                        <span class="text-white font-bold text-lg">S</span>
+                    </div>
+                    <span class="text-xl font-bold">SKILLIT-AI</span>
+                </div>
+                <p class="text-gray-400 mb-6 max-w-md mx-auto">
+                    Revolutionizing recruitment with AI-powered auction-based hiring that eliminates bias and accelerates talent acquisition.
+                </p>
+                <p class="text-gray-400">
+                    © 2024 SKILLIT-AI. All rights reserved. | Transforming recruitment with AI-powered intelligence.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Dynamic Features -->
+    <script>
+        // Animated counter for stats
+        function animateCounter(element, target, suffix = '') {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                
+                let displayValue;
+                if (target >= 1000000000) {
+                    displayValue = '£' + (current / 1000000000).toFixed(1) + 'B';
+                } else if (target >= 1000000) {
+                    displayValue = (current / 1000000).toFixed(0) + 'M';
+                } else if (target >= 1000) {
+                    displayValue = (current / 1000).toFixed(0) + 'K';
+                } else {
+                    displayValue = Math.round(current);
+                }
+                
+                element.textContent = displayValue + suffix;
+            }, 20);
+        }
+
+        // Initialize counters when page loads
+        window.addEventListener('load', () => {
+            const stats = document.querySelectorAll('[data-target]');
+            stats.forEach(stat => {
+                const target = parseInt(stat.dataset.target);
+                const suffix = stat.textContent.includes('%') ? '%' : 
+                              stat.textContent.includes('days') ? ' days' : 
+                              stat.textContent.includes('+') ? '+' : '';
+                animateCounter(stat, target, suffix);
+            });
+        });
+
+        // Floating particles animation
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'absolute w-2 h-2 bg-blue-400/30 rounded-full';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particle.style.animation = 'float 3s ease-in-out infinite';
+                particles.appendChild(particle);
+            }
+        }
+
+        // Live auction demo data
+        const candidates = [
+            {
+                id: 1,
+                name: "Sarah Mitchell",
+                role: "Senior React Developer",
+                location: "Manchester, UK",
+                experience: "5 years",
+                skills: ["React", "TypeScript", "Node.js", "AWS"],
+                aiScore: 94,
+                currentBid: 75000,
+                company: "FinTech Solutions Ltd",
+                verified: true,
+                trending: true
+            },
+            {
+                id: 2,
+                name: "James Thompson",
+                role: "DevOps Engineer",
+                location: "London, UK",
+                experience: "7 years",
+                skills: ["Kubernetes", "Docker", "Jenkins", "Python"],
+                aiScore: 91,
+                currentBid: 82000,
+                company: "Digital Innovations UK",
+                verified: true,
+                trending: false
+            },
+            {
+                id: 3,
+                name: "Emma Wilson",
+                role: "Data Scientist",
+                location: "Edinburgh, UK",
+                experience: "4 years",
+                skills: ["Python", "Machine Learning", "TensorFlow", "SQL"],
+                aiScore: 89,
+                currentBid: 68000,
+                company: "AI Research Labs",
+                verified: true,
+                trending: true
+            }
+        ];
+
+        let selectedCandidate = candidates[0];
+        let timeLeft = 3600; // 1 hour
+        let viewersCount = 23;
+        let activityFeed = [];
+
+        // Start demo function
+        function startDemo() {
+            document.getElementById('demo-section').style.display = 'block';
+            document.getElementById('demo-section').scrollIntoView({ behavior: 'smooth' });
+            initializeDemo();
+        }
+
+        // Initialize demo
+        function initializeDemo() {
+            renderCandidates();
+            startCountdown();
+            startActivitySimulation();
+            updateViewersCount();
+        }
+
+        // Render candidates
+        function renderCandidates() {
+            const candidatesList = document.getElementById('candidates-list');
+            candidatesList.innerHTML = candidates.map(candidate => `
+                <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer ${selectedCandidate.id === candidate.id ? 'ring-2 ring-blue-500 bg-blue-50' : ''}" onclick="selectCandidate(${candidate.id})">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                                ${candidate.name.split(' ').map(n => n[0]).join('')}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <h3 class="text-xl font-semibold text-gray-900">${candidate.name}</h3>
+                                    ${candidate.verified ? '<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">✓ Verified</span>' : ''}
+                                    ${candidate.trending ? '<span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs font-medium">📈 Trending</span>' : ''}
+                                </div>
+                                <p class="text-gray-600 mb-2">${candidate.role}</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500 mb-3">
+                                    <span>📍 ${candidate.location}</span>
+                                    <span>💼 ${candidate.experience}</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    ${candidate.skills.map(skill => `<span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">${skill}</span>`).join('')}
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div>
+                                        <div class="text-sm text-gray-600">AI Match Score</div>
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-20 bg-gray-200 rounded-full h-2">
+                                                <div class="bg-green-500 h-2 rounded-full" style="width: ${candidate.aiScore}%"></div>
+                                            </div>
+                                            <span class="text-sm font-semibold text-green-600">${candidate.aiScore}%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-green-600">£${candidate.currentBid.toLocaleString()}</div>
+                            <div class="text-sm text-gray-600">Current bid</div>
+                            <div class="text-xs text-gray-500 mt-1">${candidate.company}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Select candidate
+        function selectCandidate(id) {
+            selectedCandidate = candidates.find(c => c.id === id);
+            renderCandidates();
+            document.getElementById('bid-amount').value = selectedCandidate.currentBid + 1000;
+        }
+
+        // Place bid
+        function placeBid() {
+            const bidAmount = parseInt(document.getElementById('bid-amount').value);
+            if (bidAmount > selectedCandidate.currentBid) {
+                selectedCandidate.currentBid = bidAmount;
+                addActivity(`You placed a bid of £${bidAmount.toLocaleString()} on ${selectedCandidate.name}`, 'bid');
+                renderCandidates();
+                document.getElementById('bid-amount').value = bidAmount + 1000;
+            }
+        }
+
+        // Countdown timer
+        function startCountdown() {
+            setInterval(() => {
+                timeLeft--;
+                const hours = Math.floor(timeLeft / 3600);
+                const minutes = Math.floor((timeLeft % 3600) / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('countdown').textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Update viewers count
+        function updateViewersCount() {
+            setInterval(() => {
+                viewersCount += Math.floor(Math.random() * 3) - 1;
+                viewersCount = Math.max(15, Math.min(50, viewersCount));
+                document.getElementById('viewers-count').textContent = viewersCount;
+            }, 3000);
+        }
+
+        // Activity simulation
+        function startActivitySimulation() {
+            const activities = [
+                { type: 'bid', company: 'TechCorp UK', amount: 76000, candidate: 'Sarah Mitchell' },
+                { type: 'view', company: 'StartupLab', candidate: 'James Thompson' },
+                { type: 'bid', company: 'DataFlow Ltd', amount: 69000, candidate: 'Emma Wilson' },
+                { type: 'interview', company: 'CloudTech', candidate: 'Sarah Mitchell' }
+            ];
+
+            setInterval(() => {
+                const activity = activities[Math.floor(Math.random() * activities.length)];
+                let message = '';
+                
+                switch(activity.type) {
+                    case 'bid':
+                        message = `${activity.company} bid £${activity.amount?.toLocaleString()} on ${activity.candidate}`;
+                        break;
+                    case 'view':
+                        message = `${activity.company} viewed ${activity.candidate}'s profile`;
+                        break;
+                    case 'interview':
+                        message = `${activity.company} scheduled interview with ${activity.candidate}`;
+                        break;
+                }
+                
+                addActivity(message, activity.type);
+            }, 5000);
+        }
+
+        // Add activity to feed
+        function addActivity(message, type) {
+            const activityFeed = document.getElementById('activity-feed');
+            const activityElement = document.createElement('div');
+            activityElement.className = 'p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500 opacity-0 transform translate-x-4';
+            activityElement.innerHTML = `
+                <p class="text-sm text-gray-700">${message}</p>
+                <p class="text-xs text-gray-500">Just now</p>
+            `;
+            
+            activityFeed.insertBefore(activityElement, activityFeed.firstChild);
+            
+            // Animate in
+            setTimeout(() => {
+                activityElement.style.opacity = '1';
+                activityElement.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove old activities
+            if (activityFeed.children.length > 5) {
+                activityFeed.removeChild(activityFeed.lastChild);
+            }
+        }
+
+        // Play video function
+        function playVideo() {
+            alert('Video demo would open here! This showcases the interactive features of SKILLIT-AI.');
+        }
+
+        // Initialize particles and other effects
+        window.addEventListener('load', () => {
+            createParticles();
+        });
+    </script>
+</body>
+</html>

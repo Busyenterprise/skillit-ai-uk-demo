@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKILLIT-AI | UK's Premier AI-Powered Talent Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    screens: {
+                        'xs': '475px',
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 3s ease infinite',
+                        'spin-slow': 'spin-slow 20s linear infinite',
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'slide-up': 'slide-up 0.5s ease-out',
+                        'fade-in': 'fade-in 0.8s ease-out',
+                        'bounce-in': 'bounce-in 0.6s ease-out',
+                        'typing': 'typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite'
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' }
+                        },
+                        'spin-slow': { 'from': { transform: 'rotate(0deg)' }, 'to': { transform: 'rotate(360deg)' } },
+                        'pulse-glow': { '0%, 100%': { opacity: '0.4', transform: 'scale(1)' }, '50%': { opacity: '1', transform: 'scale(1.05)' } },
+                        'float': { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-20px)' } },
+                        'slide-up': { 'from': { transform: 'translateY(100px)', opacity: '0' }, 'to': { transform: 'translateY(0)', opacity: '1' } },
+                        'fade-in': { 'from': { opacity: '0' }, 'to': { opacity: '1' } },
+                        'bounce-in': { '0%': { transform: 'scale(0.3)', opacity: '0' }, '50%': { transform: 'scale(1.05)' }, '70%': { transform: 'scale(0.9)' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+                        'typing': { 'from': { width: '0' }, 'to': { width: '100%' } },
+                        'blink-caret': { 'from, to': { 'border-color': 'transparent' }, '50%': { 'border-color': '#3b82f6' } }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes gradient-x {
+            0%, 100% { background-size: 200% 200%; background-position: left center; }
+            50% { background-size: 200% 200%; background-position: right center; }
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
+        }
+        .animate-gradient-x { animation: gradient-x 3s ease infinite; }
+        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+        .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+        .bg-gradient-animated {
+            background: linear-gradient(-45deg, #1e40af, #3b82f6, #6366f1, #8b5cf6, #ec4899);
+            background-size: 400% 400%;
+            animation: gradient-x 4s ease infinite;
+        }
+        
+        .uk-gradient {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+        }
+        
+        .floating-element { animation: float 6s ease-in-out infinite; }
+        .floating-element:nth-child(2) { animation-delay: -2s; }
+        .floating-element:nth-child(3) { animation-delay: -4s; }
+        
+        .typing-text {
+            overflow: hidden;
+            border-right: 3px solid #3b82f6;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        .auction-live { animation: pulse-glow 1.5s infinite; }
+        .bid-highlight { animation: bounce-in 0.6s ease-out; }
+        
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .skill-tag {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .skill-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .candidate-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .candidate-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .job-card {
+            transition: all 0.3s ease;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .notification-slide {
+            animation: slide-up 0.5s ease-out;
+        }
+        
+        /* Mobile-first responsive design */
+        @media (max-width: 640px) {
+            .typing-text { 
+                font-size: 1.5rem; 
+                line-height: 1.2;
+            }
+            .hero-title {
+                font-size: 2.5rem;
+                line-height: 1.1;
+            }
+            .mobile-padding {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+        
+        @media (max-width: 475px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+        }
+        
+        html { scroll-behavior: smooth; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 overflow-x-hidden">
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+    
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 uk-gradient rounded-lg flex items-center justify-center mr-2 sm:mr-3">
+                            <i data-lucide="zap" class="w-4 h-4 sm:w-6 sm:h-6 text-white"></i>
+                        </div>
+                        <span class="text-lg sm:text-2xl font-bold text-gray-900">SKILLIT-AI</span>
+                        <span class="ml-1 sm:ml-2 px-1 sm:px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">UK</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#features" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Features</a>
+                        <a href="#how-it-works" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">How It Works</a>
+                        <a href="#uk-jobs" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">UK Jobs</a>
+                        <a href="#demo" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Live Demo</a>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Get Started</button>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#features" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">Features</a>
+                <a href="#how-it-works" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">How It Works</a>
+                <a href="#uk-jobs" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">UK Jobs</a>
+                <a href="#demo" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">Live Demo</a>
+                <button class="w-full text-left bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors">Get Started</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden uk-gradient">
+        <div class="absolute inset-0 bg-black opacity-10"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
+            <div class="text-center">
+                <h1 class="hero-title text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 sm:mb-6">
+                    The Future of UK Talent
+                    <span class="block text-yellow-300">Acquisition is Here</span>
+                </h1>
+                <p class="text-lg sm:text-xl text-blue-100 mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
+                    Revolutionary AI-powered platform connecting UK employers with top talent through intelligent matching, 
+                    live auctions, and comprehensive skills assessment tailored for the British market.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center px-4">
+                    <button onclick="scrollToDemo()" class="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors animate-pulse-glow">
+                        View Live Demo
+                    </button>
+                    <button class="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+                        Start Free Trial
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 120L1440 120L1440 0C1440 0 1140 80 720 80C300 80 0 0 0 0V120Z" fill="rgb(249 250 251)"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- UK Market Stats -->
+    <section class="py-12 sm:py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8 sm:mb-12">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Transforming the UK Job Market</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto px-4">Real-time insights from across the United Kingdom</p>
+            </div>
+            <div class="stats-grid grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+                <div class="text-center bg-white p-4 sm:p-6 rounded-lg shadow-md">
+                    <div class="text-2xl sm:text-4xl font-bold text-blue-600 mb-2" id="uk-jobs-count">0</div>
+                    <div class="text-sm sm:text-base text-gray-600">Active UK Jobs</div>
+                </div>
+                <div class="text-center bg-white p-4 sm:p-6 rounded-lg shadow-md">
+                    <div class="text-2xl sm:text-4xl font-bold text-green-600 mb-2" id="uk-companies-count">0</div>
+                    <div class="text-sm sm:text-base text-gray-600">UK Companies</div>
+                </div>
+                <div class="text-center bg-white p-4 sm:p-6 rounded-lg shadow-md">
+                    <div class="text-2xl sm:text-4xl font-bold text-purple-600 mb-2" id="avg-salary">£0</div>
+                    <div class="text-sm sm:text-base text-gray-600">Average Salary</div>
+                </div>
+                <div class="text-center bg-white p-4 sm:p-6 rounded-lg shadow-md">
+                    <div class="text-2xl sm:text-4xl font-bold text-orange-600 mb-2" id="success-rate">0%</div>
+                    <div class="text-sm sm:text-base text-gray-600">Match Success Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live UK Jobs Feed -->
+    <section id="uk-jobs" class="py-12 sm:py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8 sm:mb-12">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Live UK Job Feed</h2>
+                <p class="text-gray-600 px-4">Real-time job opportunities across the United Kingdom</p>
+            </div>
+            
+            <!-- Job Search Filters -->
+            <div class="bg-gray-50 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                        <select id="location-filter" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm sm:text-base">
+                            <option value="">All UK Locations</option>
+                            <option value="london">London</option>
+                            <option value="manchester">Manchester</option>
+                            <option value="birmingham">Birmingham</option>
+                            <option value="edinburgh">Edinburgh</option>
+                            <option value="bristol">Bristol</option>
+                            <option value="cambridge">Cambridge</option>
+                            <option value="oxford">Oxford</option>
+                            <option value="glasgow">Glasgow</option>
+                            <option value="cardiff">Cardiff</option>
+                            <option value="belfast">Belfast</option>
+                            <option value="leeds">Leeds</option>
+                            <option value="liverpool">Liverpool</option>
+                            <option value="newcastle">Newcastle</option>
+                            <option value="nottingham">Nottingham</option>
+                            <option value="sheffield">Sheffield</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Salary Range</label>
+                        <select id="salary-filter" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm sm:text-base">
+                            <option value="">Any Salary</option>
+                            <option value="20000-35000">£20k - £35k</option>
+                            <option value="35000-50000">£35k - £50k</option>
+                            <option value="50000-75000">£50k - £75k</option>
+                            <option value="75000-100000">£75k - £100k</option>
+                            <option value="100000+">£100k+</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Job Type</label>
+                        <select id="type-filter" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm sm:text-base">
+                            <option value="">All Types</option>
+                            <option value="permanent">Permanent</option>
+                            <option value="contract">Contract</option>
+                            <option value="remote">Remote</option>
+                            <option value="hybrid">Hybrid</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="filterJobs()" class="w-full bg-blue-600 text-white p-2 sm:p-3 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base">
+                            Search Jobs
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Advanced Filters (Mobile Collapsible) -->
+                <div class="mt-4">
+                    <button id="advanced-filters-toggle" class="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center">
+                        <span>Advanced Filters</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 ml-1 transition-transform" id="advanced-filters-icon"></i>
+                    </button>
+                    <div id="advanced-filters" class="hidden mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Industry</label>
+                            <select id="industry-filter" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm sm:text-base">
+                                <option value="">All Industries</option>
+                                <option value="technology">Technology & Software</option>
+                                <option value="finance">Financial Services</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="education">Education</option>
+                                <option value="retail">Retail & E-commerce</option>
+                                <option value="manufacturing">Manufacturing</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Experience Level</label>
+                            <select id="experience-filter" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm sm:text-base">
+                                <option value="">All Levels</option>
+                                <option value="entry">Entry Level</option>
+                                <option value="mid">Mid Level</option>
+                                <option value="senior">Senior Level</option>
+                                <option value="lead">Lead/Principal</option>
+                                <option value="executive">Executive</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Posted Within</label>
+                            <select id="posted-filter" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm sm:text-base">
+                                <option value="">Any Time</option>
+                                <option value="1">Last 24 hours</option>
+                                <option value="3">Last 3 days</option>
+                                <option value="7">Last week</option>
+                                <option value="30">Last month</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="jobs-loading" class="hidden text-center py-8">
+                <div class="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p class="text-gray-600">Loading UK jobs...</p>
+            </div>
+
+            <!-- Jobs List -->
+            <div id="jobs-container" class="space-y-4 sm:space-y-6">
+                <!-- Jobs will be populated by JavaScript -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-8">
+                <button id="load-more-jobs" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                    Load More Jobs
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section id="demo" class="py-12 sm:py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8 sm:mb-12">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Live Platform Demo</h2>
+                <p class="text-gray-600 px-4">Experience our AI-powered matching and auction system in real-time</p>
+            </div>
+
+            <!-- Demo Tabs -->
+            <div class="flex justify-center mb-6 sm:mb-8 overflow-x-auto">
+                <div class="bg-white p-1 rounded-lg shadow-md flex space-x-1 min-w-max">
+                    <button onclick="showDemo('ai-matching')" id="tab-ai-matching" class="px-3 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-colors bg-blue-600 text-white text-sm sm:text-base whitespace-nowrap">
+                        AI Matching
+                    </button>
+                    <button onclick="showDemo('live-auction')" id="tab-live-auction" class="px-3 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-colors text-gray-600 hover:text-blue-600 text-sm sm:text-base whitespace-nowrap">
+                        Live Auction
+                    </button>
+                    <button onclick="showDemo('skills-assessment')" id="tab-skills-assessment" class="px-3 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-colors text-gray-600 hover:text-blue-600 text-sm sm:text-base whitespace-nowrap">
+                        Skills Assessment
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI Matching Demo -->
+            <div id="demo-ai-matching" class="demo-content">
+                <div class="bg-white rounded-lg shadow-lg p-4 sm:p-8">
+                    <h3 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">AI-Powered Candidate Matching</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold mb-4">Job Requirements</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="mb-3">
+                                    <span class="font-medium">Position:</span> Senior Software Engineer
+                                </div>
+                                <div class="mb-3">
+                                    <span class="font-medium">Location:</span> London, UK
+                                </div>
+                                <div class="mb-3">
+                                    <span class="font-medium">Salary:</span> £75,000 - £95,000
+                                </div>
+                                <div class="mb-3">
+                                    <span class="font-medium">Skills Required:</span>
+                                    <div class="flex flex-wrap gap-2 mt-2">
+                                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">React</span>
+                                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">Node.js</span>
+                                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">TypeScript</span>
+                                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">AWS</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-4">AI Matching Results</h4>
+                            <div id="matching-results" class="space-y-3">
+                                <!-- Results will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <button onclick="runMatching()" class="bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base">
+                            Run AI Matching
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Auction Demo -->
+            <div id="demo-live-auction" class="demo-content hidden">
+                <div class="bg-white rounded-lg shadow-lg p-4 sm:p-8">
+                    <h3 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Live Talent Auction</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2">
+                            <div class="bg-gradient-to-r from-green-400 to-blue-500 text-white p-4 sm:p-6 rounded-lg mb-6">
+                                <h4 class="text-lg sm:text-xl font-bold mb-2">Featured Candidate</h4>
+                                <p class="mb-2 text-sm sm:text-base">Senior Full-Stack Developer | 8 years experience</p>
+                                <p class="text-xs sm:text-sm opacity-90">Skills: React, Node.js, Python, AWS, Docker</p>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-sm sm:text-base">Current Bid:</span>
+                                    <span id="current-bid" class="text-xl sm:text-2xl font-bold text-green-600">£85,000</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-sm sm:text-base">Time Remaining:</span>
+                                    <span id="auction-timer" class="text-lg sm:text-xl font-bold text-red-600">02:45</span>
+                                </div>
+                                <div class="bg-gray-100 p-4 rounded-lg">
+                                    <h5 class="font-medium mb-2 text-sm sm:text-base">Bidding Activity</h5>
+                                    <div id="bid-history" class="space-y-2 max-h-32 overflow-y-auto">
+                                        <!-- Bid history will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-base sm:text-lg font-semibold mb-4">Active Bidders</h4>
+                            <div id="active-bidders" class="space-y-3">
+                                <!-- Bidders will be populated by JavaScript -->
+                            </div>
+                            <div class="mt-6">
+                                <button onclick="placeBid()" class="w-full bg-green-600 text-white py-2 sm:py-3 rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base">
+                                    Place Bid
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Assessment Demo -->
+            <div id="demo-skills-assessment" class="demo-content hidden">
+                <div class="bg-white rounded-lg shadow-lg p-4 sm:p-8">
+                    <h3 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">AI Skills Assessment</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                        <div>
+                            <h4 class="text-base sm:text-lg font-semibold mb-4">Assessment Questions</h4>
+                            <div id="assessment-question" class="bg-gray-50 p-4 sm:p-6 rounded-lg">
+                                <p class="font-medium mb-4 text-sm sm:text-base">Question 1 of 5:</p>
+                                <p class="mb-4 text-sm sm:text-base">What is the primary benefit of using React hooks over class components?</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-center text-sm sm:text-base">
+                                        <input type="radio" name="q1" value="a" class="mr-2">
+                                        <span>Better performance</span>
+                                    </label>
+                                    <label class="flex items-center text-sm sm:text-base">
+                                        <input type="radio" name="q1" value="b" class="mr-2">
+                                        <span>Simpler state management and lifecycle handling</span>
+                                    </label>
+                                    <label class="flex items-center text-sm sm:text-base">
+                                        <input type="radio" name="q1" value="c" class="mr-2">
+                                        <span>Smaller bundle size</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button onclick="nextQuestion()" class="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base">
+                                    Next Question
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-base sm:text-lg font-semibold mb-4">Real-time Analysis</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-2 text-sm sm:text-base">
+                                        <span>Technical Knowledge</span>
+                                        <span id="tech-score">85%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-2 text-sm sm:text-base">
+                                        <span>Problem Solving</span>
+                                        <span id="problem-score">78%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-600 h-2 rounded-full transition-all duration-500" style="width: 78%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-2 text-sm sm:text-base">
+                                        <span>Communication</span>
+                                        <span id="comm-score">92%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full transition-all duration-500" style="width: 92%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6 p-4 bg-green-50 rounded-lg">
+                                <h5 class="font-medium text-green-800 mb-2 text-sm sm:text-base">AI Insights</h5>
+                                <p class="text-xs sm:text-sm text-green-700">
+                                    Candidate shows strong technical foundation with excellent communication skills. 
+                                    Recommended for senior-level positions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-12 sm:py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8 sm:mb-12">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Powerful Features for the UK Market</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto px-4">
+                    Comprehensive tools designed specifically for UK employers and job seekers
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                <div class="text-center p-4 sm:p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 uk-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="brain" class="w-6 h-6 sm:w-8 sm:h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-semibold mb-3">AI-Powered Matching</h3>
+                    <p class="text-gray-600 text-sm sm:text-base">Advanced algorithms analyze skills, experience, and cultural fit for perfect matches</p>
+                </div>
+                <div class="text-center p-4 sm:p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 uk-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="gavel" class="w-6 h-6 sm:w-8 sm:h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-semibold mb-3">Live Talent Auctions</h3>
+                    <p class="text-gray-600 text-sm sm:text-base">Real-time bidding system connecting top talent with competitive employers</p>
+                </div>
+                <div class="text-center p-4 sm:p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 uk-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="map-pin" class="w-6 h-6 sm:w-8 sm:h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-semibold mb-3">UK Market Focus</h3>
+                    <p class="text-gray-600 text-sm sm:text-base">Tailored for British employment laws, salary benchmarks, and market conditions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-12 sm:py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8 sm:mb-12">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">How SKILLIT-AI Works</h2>
+                <p class="text-gray-600 px-4">Simple steps to revolutionize your hiring process</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                <div class="text-center">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-lg sm:text-2xl font-bold">1</div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-2">Post Your Role</h3>
+                    <p class="text-gray-600 text-sm sm:text-base">Create detailed job specifications with UK-specific requirements</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-lg sm:text-2xl font-bold">2</div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-2">AI Matching</h3>
+                    <p class="text-gray-600 text-sm sm:text-base">Our AI analyzes and matches the best UK talent to your needs</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-lg sm:text-2xl font-bold">3</div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-2">Live Auction</h3>
+                    <p class="text-gray-600 text-sm sm:text-base">Participate in real-time bidding for top candidates</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-lg sm:text-2xl font-bold">4</div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-2">Hire & Onboard</h3>
+                    <p class="text-gray-600 text-sm sm:text-base">Seamless hiring process with UK compliance built-in</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8 sm:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+                <div class="col-span-1 sm:col-span-2 md:col-span-1">
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 uk-gradient rounded-lg flex items-center justify-center mr-2 sm:mr-3">
+                            <i data-lucide="zap" class="w-4 h-4 sm:w-6 sm:h-6 text-white"></i>
+                        </div>
+                        <span class="text-lg sm:text-2xl font-bold">SKILLIT-AI</span>
+                    </div>
+                    <p class="text-gray-400 text-sm sm:text-base">Revolutionizing UK talent acquisition with AI-powered matching and live auctions.</p>
+                </div>
+                <div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-4">Platform</h3>
+                    <ul class="space-y-2 text-gray-400 text-sm sm:text-base">
+                        <li><a href="#" class="hover:text-white transition-colors">For Employers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">For Candidates</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">API</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-2 text-gray-400 text-sm sm:text-base">
+                        <li><a href="#" class="hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Case Studies</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-4">Company</h3>
+                    <ul class="space-y-2 text-gray-400 text-sm sm:text-base">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center text-gray-400 text-sm sm:text-base">
+                <p>&copy; 2024 SKILLIT-AI. All rights reserved. Made in the UK 🇬🇧</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // UK Cities Data
+        const UK_CITIES = [
+            { name: "London", region: "London", population: 9648110, techJobs: 45000, avgSalary: 85000 },
+            { name: "Birmingham", region: "West Midlands", population: 1141816, techJobs: 8500, avgSalary: 52000 },
+            { name: "Manchester", region: "North West", population: 547899, techJobs: 12000, avgSalary: 48000 },
+            { name: "Leeds", region: "Yorkshire", population: 789194, techJobs: 7500, avgSalary: 45000 },
+            { name: "Liverpool", region: "North West", population: 498042, techJobs: 4200, avgSalary: 42000 },
+            { name: "Sheffield", region: "Yorkshire", population: 584853, techJobs: 3800, avgSalary: 40000 },
+            { name: "Bristol", region: "South West", population: 467099, techJobs: 8200, avgSalary: 52000 },
+            { name: "Newcastle", region: "North East", population: 300196, techJobs: 3500, avgSalary: 38000 },
+            { name: "Nottingham", region: "East Midlands", population: 332900, techJobs: 4100, avgSalary: 41000 },
+            { name: "Leicester", region: "East Midlands", population: 355218, techJobs: 3200, avgSalary: 39000 },
+            { name: "Cambridge", region: "East of England", population: 145818, techJobs: 6500, avgSalary: 65000 },
+            { name: "Oxford", region: "South East", population: 154600, techJobs: 4800, avgSalary: 58000 },
+            { name: "Reading", region: "South East", population: 174224, techJobs: 5200, avgSalary: 62000 },
+            { name: "Brighton", region: "South East", population: 290885, techJobs: 4500, avgSalary: 48000 },
+            { name: "Bath", region: "South West", population: 101557, techJobs: 2100, avgSalary: 50000 },
+            { name: "Edinburgh", region: "Scotland", population: 518500, techJobs: 8500, avgSalary: 48000 },
+            { name: "Glasgow", region: "Scotland", population: 635640, techJobs: 6200, avgSalary: 44000 },
+            { name: "Aberdeen", region: "Scotland", population: 198590, techJobs: 2800, avgSalary: 52000 },
+            { name: "Cardiff", region: "Wales", population: 366903, techJobs: 4200, avgSalary: 42000 },
+            { name: "Belfast", region: "Northern Ireland", population: 343542, techJobs: 3500, avgSalary: 40000 }
+        ];
+
+        // Enhanced UK Job API with real-world data structure
+        class UKJobAPI {
+            constructor() {
+                this.jobs = [
+                    {
+                        id: "uk-job-001",
+                        title: "Senior Full Stack Developer",
+                        company: "TechForward London",
+                        location: "London",
+                        salary: { min: 75000, max: 95000, currency: "GBP" },
+                        description: "Join our innovative team building next-generation fintech solutions. We're looking for a senior developer with expertise in modern web technologies and cloud platforms.",
+                        requirements: ["5+ years experience", "React & Node.js", "AWS cloud services", "TypeScript", "Microservices"],
+                        benefits: ["Competitive salary", "25 days holiday", "Private healthcare", "£3,000 learning budget", "Flexible working"],
+                        type: "permanent",
+                        workingPattern: "full-time",
+                        remoteType: "hybrid",
+                        postedDate: "2024-01-15T09:00:00Z",
+                        applicationCount: 23,
+                        skills: ["React", "Node.js", "TypeScript", "AWS", "Docker", "PostgreSQL"],
+                        experienceLevel: "senior",
+                        industry: "Financial Services",
+                        companySize: "51-200 employees",
+                        rightToWork: true,
+                        visaSponsorship: false
+                    },
+                    {
+                        id: "uk-job-002",
+                        title: "DevOps Engineer",
+                        company: "CloudTech Manchester",
+                        location: "Manchester",
+                        salary: { min: 55000, max: 75000, currency: "GBP" },
+                        description: "We're seeking a skilled DevOps Engineer to join our growing infrastructure team. You'll be responsible for maintaining and scaling our cloud infrastructure.",
+                        requirements: ["3+ years DevOps experience", "Kubernetes & Docker", "CI/CD pipelines", "Python or Go", "AWS/Azure certification"],
+                        benefits: ["Competitive salary", "Remote-first culture", "Professional development", "Health benefits", "Stock options"],
+                        type: "permanent",
+                        workingPattern: "full-time",
+                        remoteType: "remote",
+                        postedDate: "2024-01-14T14:30:00Z",
+                        applicationCount: 18,
+                        skills: ["Kubernetes", "Docker", "Python", "AWS", "Terraform", "Jenkins"],
+                        experienceLevel: "mid",
+                        industry: "Technology & Software",
+                        companySize: "11-50 employees",
+                        rightToWork: true,
+                        visaSponsorship: true
+                    },
+                    {
+                        id: "uk-job-003",
+                        title: "Data Scientist",
+                        company: "AI Innovations Edinburgh",
+                        location: "Edinburgh",
+                        salary: { min: 65000, max: 85000, currency: "GBP" },
+                        description: "Join our AI research team working on cutting-edge machine learning projects. We're looking for a data scientist passionate about solving complex problems.",
+                        requirements: ["PhD/Masters in CS/Stats", "Python and R", "ML frameworks", "Statistical analysis", "Big data technologies"],
+                        benefits: ["Excellent salary", "Research budget", "Flexible hours", "Collaborative environment", "Publication opportunities"],
+                        type: "permanent",
+                        workingPattern: "full-time",
+                        remoteType: "hybrid",
+                        postedDate: "2024-01-13T11:15:00Z",
+                        applicationCount: 31,
+                        skills: ["Python", "R", "TensorFlow", "PyTorch", "SQL", "Spark"],
+                        experienceLevel: "senior",
+                        industry: "Technology & Software",
+                        companySize: "201-500 employees",
+                        rightToWork: true,
+                        visaSponsorship: true
+                    },
+                    {
+                        id: "uk-job-004",
+                        title: "Frontend Developer",
+                        company: "Creative Digital Bristol",
+                        location: "Bristol",
+                        salary: { min: 45000, max: 60000, currency: "GBP" },
+                        description: "We're looking for a talented frontend developer to join our creative team. You'll work on exciting projects for major UK brands.",
+                        requirements: ["3+ years frontend experience", "Expert React & JavaScript", "CSS & responsive design", "Design systems", "Accessibility standards"],
+                        benefits: ["Competitive salary", "Creative environment", "Development budget", "Flexible working", "Team events"],
+                        type: "permanent",
+                        workingPattern: "full-time",
+                        remoteType: "hybrid",
+                        postedDate: "2024-01-12T16:45:00Z",
+                        applicationCount: 27,
+                        skills: ["React", "JavaScript", "CSS", "SASS", "Figma", "Git"],
+                        experienceLevel: "mid",
+                        industry: "Media & Creative",
+                        companySize: "11-50 employees",
+                        rightToWork: true,
+                        visaSponsorship: false
+                    },
+                    {
+                        id: "uk-job-005",
+                        title: "Backend Engineer",
+                        company: "FinTech Solutions Birmingham",
+                        location: "Birmingham",
+                        salary: { min: 50000, max: 70000, currency: "GBP" },
+                        description: "Join our backend team building scalable financial services. We're looking for an engineer with strong API development experience.",
+                        requirements: ["4+ years backend experience", "Node.js or Python", "Microservices architecture", "Database optimization", "Financial regulations"],
+                        benefits: ["Competitive salary", "Private healthcare", "Pension matching", "Learning opportunities", "Flexible working"],
+                        type: "permanent",
+                        workingPattern: "full-time",
+                        remoteType: "office",
+                        postedDate: "2024-01-11T10:20:00Z",
+                        applicationCount: 19,
+                        skills: ["Node.js", "Python", "PostgreSQL", "Redis", "Docker", "AWS"],
+                        experienceLevel: "mid",
+                        industry: "Financial Services",
+                        companySize: "101-500 employees",
+                        rightToWork: true,
+                        visaSponsorship: false
+                    },
+                    {
+                        id: "uk-job-006",
+                        title: "Mobile App Developer",
+                        company: "AppCraft Cambridge",
+                        location: "Cambridge",
+                        salary: { min: 55000, max: 75000, currency: "GBP" },
+                        description: "We're seeking a mobile developer to work on innovative iOS and Android applications for our diverse client base.",
+                        requirements: ["3+ years mobile development", "Swift and Kotlin", "React Native/Flutter", "Mobile UI/UX", "App Store publishing"],
+                        benefits: ["Excellent salary", "Latest devices", "Conference budget", "Flexible hours", "Collaborative team"],
+                        type: "permanent",
+                        workingPattern: "full-time",
+                        remoteType: "hybrid",
+                        postedDate: "2024-01-10T13:30:00Z",
+                        applicationCount: 22,
+                        skills: ["Swift", "Kotlin", "React Native", "Flutter", "iOS", "Android"],
+                        experienceLevel: "mid",
+                        industry: "Technology & Software",
+                        companySize: "11-50 employees",
+                        rightToWork: true,
+                        visaSponsorship: true
+                    }
+                ];
+            }
+
+            async searchJobs(filters = {}) {
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                let filteredJobs = [...this.jobs];
+
+                if (filters.location) {
+                    filteredJobs = filteredJobs.filter(job => 
+                        job.location.toLowerCase().includes(filters.location.toLowerCase())
+                    );
+                }
+
+                if (filters.salaryMin) {
+                    filteredJobs = filteredJobs.filter(job => 
+                        job.salary.max && job.salary.max >= filters.salaryMin
+                    );
+                }
+
+                if (filters.salaryMax) {
+                    filteredJobs = filteredJobs.filter(job => 
+                        job.salary.min && job.salary.min <= filters.salaryMax
+                    );
+                }
+
+                if (filters.jobType) {
+                    filteredJobs = filteredJobs.filter(job => 
+                        job.type === filters.jobType || job.remoteType === filters.jobType
+                    );
+                }
+
+                if (filters.industry) {
+                    filteredJobs = filteredJobs.filter(job => 
+                        job.industry.toLowerCase().includes(filters.industry.toLowerCase())
+                    );
+                }
+
+                if (filters.experienceLevel) {
+                    filteredJobs = filteredJobs.filter(job => 
+                        job.experienceLevel === filters.experienceLevel
+                    );
+                }
+
+                return {
+                    jobs: filteredJobs,
+                    total: filteredJobs.length,
+                    page: 1,
+                    totalPages: Math.ceil(filteredJobs.length / 20)
+                };
+            }
+        }
+
+        // Initialize API
+        const jobAPI = new UKJobAPI();
+        let currentJobs = [];
+        let isLoading = false;
+
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuOverlay.classList.toggle('hidden');
+        });
+
+        mobileMenuOverlay.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            mobileMenuOverlay.classList.add('hidden');
+        });
+
+        // Advanced filters toggle
+        const advancedFiltersToggle = document.getElementById('advanced-filters-toggle');
+        const advancedFilters = document.getElementById('advanced-filters');
+        const advancedFiltersIcon = document.getElementById('advanced-filters-icon');
+
+        advancedFiltersToggle.addEventListener('click', () => {
+            advancedFilters.classList.toggle('hidden');
+            advancedFiltersIcon.style.transform = advancedFilters.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+
+        // Animate counters
+        function animateCounter(elementId, targetValue, suffix = '') {
+            const element = document.getElementById(elementId);
+            const duration = 2000;
+            const startValue = 0;
+            const increment = targetValue / (duration / 16);
+            let currentValue = startValue;
+
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= targetValue) {
+                    currentValue = targetValue;
+                    clearInterval(timer);
+                }
+                
+                let displayValue = Math.floor(currentValue);
+                if (elementId === 'avg-salary') {
+                    element.textContent = '£' + displayValue.toLocaleString();
+                } else {
+                    element.textContent = displayValue.toLocaleString() + suffix;
+                }
+            }, 16);
+        }
+
+        // Load and display jobs
+        async function loadJobs(filters = {}) {
+            if (isLoading) return;
+            
+            isLoading = true;
+            const loadingElement = document.getElementById('jobs-loading');
+            const containerElement = document.getElementById('jobs-container');
+            
+            loadingElement.classList.remove('hidden');
+            
+            try {
+                const result = await jobAPI.searchJobs(filters);
+                currentJobs = result.jobs;
+                displayJobs(currentJobs);
+            } catch (error) {
+                console.error('Error loading jobs:', error);
+                containerElement.innerHTML = '<div class="text-center py-8 text-red-600">Error loading jobs. Please try again.</div>';
+            } finally {
+                loadingElement.classList.add('hidden');
+                isLoading = false;
+            }
+        }
+
+        function displayJobs(jobs) {
+            const container = document.getElementById('jobs-container');
+            
+            if (jobs.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <i data-lucide="search" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">No jobs found</h3>
+                        <p class="text-gray-600">Try adjusting your search filters to find more opportunities.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = jobs.map(job => createJobElement(job)).join('');
+            lucide.createIcons();
+        }
+
+        function createJobElement(job) {
+            const postedDate = new Date(job.postedDate);
+            const now = new Date();
+            const diffTime = Math.abs(now - postedDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const timeAgo = diffDays === 1 ? '1 day ago' : `${diffDays} days ago`;
+
+            return `
+                <div class="job-card bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg border-l-4 border-blue-500">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4">
+                        <div class="flex-1">
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-2">${job.title}</h3>
+                            <p class="text-gray-600 mb-1 font-medium">${job.company}</p>
+                            <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-3">
+                                <span class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
+                                    ${job.location}
+                                </span>
+                                <span class="flex items-center">
+                                    <i data-lucide="briefcase" class="w-4 h-4 mr-1"></i>
+                                    ${job.type}
+                                </span>
+                                <span class="flex items-center">
+                                    <i data-lucide="home" class="w-4 h-4 mr-1"></i>
+                                    ${job.remoteType}
+                                </span>
+                                <span class="flex items-center">
+                                    <i data-lucide="users" class="w-4 h-4 mr-1"></i>
+                                    ${job.companySize}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="text-left sm:text-right mt-2 sm:mt-0">
+                            <p class="text-lg sm:text-xl font-semibold text-green-600">
+                                £${job.salary.min.toLocaleString()} - £${job.salary.max.toLocaleString()}
+                            </p>
+                            <div class="flex flex-wrap gap-2 mt-2 sm:justify-end">
+                                <span class="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">${job.experienceLevel}</span>
+                                <span class="inline-block px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">${job.industry}</span>
+                                ${job.visaSponsorship ? '<span class="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Visa Sponsorship</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-700 mb-4 text-sm sm:text-base line-clamp-2">${job.description}</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-sm font-semibold text-gray-900 mb-2">Key Skills:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            ${job.skills.slice(0, 6).map(skill => 
+                                `<span class="skill-tag bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm">${skill}</span>`
+                            ).join('')}
+                            ${job.skills.length > 6 ? `<span class="text-gray-500 text-sm">+${job.skills.length - 6} more</span>` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center text-sm text-gray-500">
+                        <div class="flex items-center space-x-4 mb-2 sm:mb-0">
+                            <span class="flex items-center">
+                                <i data-lucide="clock" class="w-4 h-4 mr-1"></i>
+                                Posted ${timeAgo}
+                            </span>
+                            <span class="flex items-center">
+                                <i data-lucide="users" class="w-4 h-4 mr-1"></i>
+                                ${job.applicationCount} applicants
+                            </span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                                Apply Now
+                            </button>
+                            <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium">
+                                Save Job
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Filter jobs
+        async function filterJobs() {
+            const filters = {
+                location: document.getElementById('location-filter').value,
+                salaryRange: document.getElementById('salary-filter').value,
+                jobType: document.getElementById('type-filter').value,
+                industry: document.getElementById('industry-filter').value,
+                experienceLevel: document.getElementById('experience-filter').value,
+                postedWithin: document.getElementById('posted-filter').value
+            };
+
+            // Parse salary range
+            if (filters.salaryRange) {
+                const [min, max] = filters.salaryRange.split('-').map(s => parseInt(s.replace('+', '')));
+                filters.salaryMin = min;
+                filters.salaryMax = max || 999999;
+            }
+
+            await loadJobs(filters);
+        }
+
+        // Demo functionality
+        function showDemo(demoType) {
+            // Hide all demos
+            document.querySelectorAll('.demo-content').forEach(demo => {
+                demo.classList.add('hidden');
+            });
+
+            // Remove active class from all tabs
+            document.querySelectorAll('[id^="tab-"]').forEach(tab => {
+                tab.classList.remove('bg-blue-600', 'text-white');
+                tab.classList.add('text-gray-600');
+            });
+
+            // Show selected demo
+            document.getElementById(`demo-${demoType}`).classList.remove('hidden');
+            
+            // Activate selected tab
+            const activeTab = document.getElementById(`tab-${demoType}`);
+            activeTab.classList.add('bg-blue-600', 'text-white');
+            activeTab.classList.remove('text-gray-600');
+
+            // Initialize demo-specific functionality
+            if (demoType === 'live-auction') {
+                startAuctionTimer();
+                loadBidHistory();
+                loadActiveBidders();
+            }
+        }
+
+        // AI Matching Demo
+        function runMatching() {
+            const resultsContainer = document.getElementById('matching-results');
+            resultsContainer.innerHTML = '<div class="text-center py-4"><div class="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto"></div><p class="mt-2 text-gray-600">AI analyzing candidates...</p></div>';
+
+            const candidates = [
+                { name: "Sarah Johnson", experience: "8 years", skills: ["React", "Node.js", "TypeScript", "AWS"], match: 95, location: "London", availability: "Immediate" },
+                { name: "Michael Chen", experience: "6 years", skills: ["React", "Python", "Docker", "GCP"], match: 88, location: "Manchester", availability: "2 weeks" },
+                { name: "Emma Williams", experience: "10 years", skills: ["Vue.js", "Node.js", "AWS", "MongoDB"], match: 82, location: "Remote", availability: "1 month" }
+            ];
+
+            setTimeout(() => {
+                resultsContainer.innerHTML = '';
+                candidates.forEach((candidate, index) => {
+                    setTimeout(() => {
+                        const candidateElement = document.createElement('div');
+                        candidateElement.className = 'bg-gray-50 p-4 rounded-lg border-l-4 border-green-500 animate-pulse-glow';
+                        candidateElement.innerHTML = `
+                            <div class="flex justify-between items-start mb-2">
+                                <h5 class="font-semibold text-sm sm:text-base">${candidate.name}</h5>
+                                <span class="text-green-600 font-bold text-sm sm:text-base">${candidate.match}% match</span>
+                            </div>
+                            <p class="text-xs sm:text-sm text-gray-600 mb-2">${candidate.experience} experience • ${candidate.location}</p>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                ${candidate.skills.map(skill => `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">${skill}</span>`).join('')}
+                            </div>
+                            <p class="text-xs text-gray-500">Available: ${candidate.availability}</p>
+                        `;
+                        resultsContainer.appendChild(candidateElement);
+                    }, index * 500);
+                });
+            }, 2000);
+        }
+
+        // Live Auction Demo
+        let auctionTimer;
+        let currentBidAmount = 85000;
+        let timeRemaining = 165; // 2:45 in seconds
+
+        function startAuctionTimer() {
+            clearInterval(auctionTimer);
+            auctionTimer = setInterval(() => {
+                timeRemaining--;
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                const timerElement = document.getElementById('auction-timer');
+                if (timerElement) {
+                    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(auctionTimer);
+                    if (timerElement) timerElement.textContent = 'ENDED';
+                }
+            }, 1000);
+        }
+
+        function loadBidHistory() {
+            const bidHistory = document.getElementById('bid-history');
+            if (!bidHistory) return;
+            
+            const bids = [
+                { company: 'TechCorp', amount: 85000, time: '30s ago' },
+                { company: 'InnovateLtd', amount: 82000, time: '2m ago' },
+                { company: 'DigitalPro', amount: 80000, time: '3m ago' },
+                { company: 'StartupXYZ', amount: 78000, time: '5m ago' }
+            ];
+
+            bidHistory.innerHTML = bids.map(bid => `
+                <div class="flex justify-between text-xs sm:text-sm">
+                    <span class="truncate mr-2">${bid.company}</span>
+                    <span class="font-medium">£${bid.amount.toLocaleString()}</span>
+                    <span class="text-gray-500 text-xs">${bid.time}</span>
+                </div>
+            `).join('');
+        }
+
+        function loadActiveBidders() {
+            const biddersContainer = document.getElementById('active-bidders');
+            if (!biddersContainer) return;
+            
+            const bidders = [
+                { name: 'TechCorp London', status: 'Leading', color: 'green' },
+                { name: 'InnovateLtd', status: 'Active', color: 'blue' },
+                { name: 'DigitalPro', status: 'Watching', color: 'gray' }
+            ];
+
+            biddersContainer.innerHTML = bidders.map(bidder => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <span class="font-medium text-sm truncate mr-2">${bidder.name}</span>
+                    <span class="px-2 py-1 bg-${bidder.color}-100 text-${bidder.color}-800 text-xs rounded-full whitespace-nowrap">${bidder.status}</span>
+                </div>
+            `).join('');
+        }
+
+        function placeBid() {
+            currentBidAmount += 2000;
+            const currentBidElement = document.getElementById('current-bid');
+            if (currentBidElement) {
+                currentBidElement.textContent = `£${currentBidAmount.toLocaleString()}`;
+            }
+            
+            // Add new bid to history
+            const bidHistory = document.getElementById('bid-history');
+            if (bidHistory) {
+                const newBid = document.createElement('div');
+                newBid.className = 'flex justify-between text-xs sm:text-sm bg-green-100 p-2 rounded';
+                newBid.innerHTML = `
+                    <span class="truncate mr-2">Your Company</span>
+                    <span class="font-medium">£${currentBidAmount.toLocaleString()}</span>
+                    <span class="text-gray-500 text-xs">Just now</span>
+                `;
+                bidHistory.insertBefore(newBid, bidHistory.firstChild);
+            }
+        }
+
+        // Skills Assessment Demo
+        let currentQuestion = 1;
+        const totalQuestions = 5;
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                updateAssessmentQuestion();
+                updateScores();
+            }
+        }
+
+        function updateAssessmentQuestion() {
+            const questions = [
+                {
+                    question: "What is the primary benefit of using React hooks over class components?",
+                    options: ["Better performance", "Simpler state management and lifecycle handling", "Smaller bundle size"]
+                },
+                {
+                    question: "Which AWS service is best for hosting a static website?",
+                    options: ["EC2", "S3 with CloudFront", "Lambda"]
+                },
+                {
+                    question: "What is the purpose of TypeScript in modern web development?",
+                    options: ["Faster runtime performance", "Static type checking and better developer experience", "Smaller bundle sizes"]
+                }
+            ];
+
+            const questionElement = document.getElementById('assessment-question');
+            if (questionElement && currentQuestion <= questions.length) {
+                const questionData = questions[currentQuestion - 1];
+                questionElement.innerHTML = `
+                    <p class="font-medium mb-4 text-sm sm:text-base">Question ${currentQuestion} of ${totalQuestions}:</p>
+                    <p class="mb-4 text-sm sm:text-base">${questionData.question}</p>
+                    <div class="space-y-2">
+                        ${questionData.options.map((option, index) => `
+                            <label class="flex items-center text-sm sm:text-base">
+                                <input type="radio" name="q${currentQuestion}" value="${String.fromCharCode(97 + index)}" class="mr-2">
+                                <span>${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        }
+
+        function updateScores() {
+            const scores = {
+                tech: Math.min(85 + (currentQuestion * 2), 95),
+                problem: Math.min(78 + (currentQuestion * 3), 90),
+                comm: Math.min(92 + (currentQuestion * 1), 98)
+            };
+
+            const techScoreElement = document.getElementById('tech-score');
+            const problemScoreElement = document.getElementById('problem-score');
+            const commScoreElement = document.getElementById('comm-score');
+
+            if (techScoreElement) techScoreElement.textContent = `${scores.tech}%`;
+            if (problemScoreElement) problemScoreElement.textContent = `${scores.problem}%`;
+            if (commScoreElement) commScoreElement.textContent = `${scores.comm}%`;
+
+            // Update progress bars with smooth animation
+            const progressBars = document.querySelectorAll('.bg-blue-600, .bg-green-600, .bg-purple-600');
+            if (progressBars[0]) progressBars[0].style.width = `${scores.tech}%`;
+            if (progressBars[1]) progressBars[1].style.width = `${scores.problem}%`;
+            if (progressBars[2]) progressBars[2].style.width = `${scores.comm}%`;
+        }
+
+        // Utility functions
+        function scrollToDemo() {
+            document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize counters
+            animateCounter('uk-jobs-count', 12847);
+            animateCounter('uk-companies-count', 3421);
+            animateCounter('avg-salary', 67500);
+            animateCounter('success-rate', 94, '%');
+
+            // Load initial jobs
+            loadJobs();
+
+            // Show AI matching demo by default
+            showDemo('ai-matching');
+
+            // Initialize icons
+            lucide.createIcons();
+        });
+
+        // Handle mobile navigation clicks
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+                document.getElementById('mobile-menu-overlay').classList.add('hidden');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
