@@ -1,0 +1,382 @@
+// Prisma schema for SKILLIT-AI UK MVP
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Core User Management
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  emailVerified     DateTime?
+  name              String?
+  image             String?
+  userType          UserType  @default(CANDIDATE)
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // UK-specific fields
+  postcode          String?
+  rightToWork       Boolean   @default(false)
+  visaStatus        String?
+  
+  // GDPR Compliance
+  gdprConsent       Boolean   @default(false)
+  gdprConsentDate   DateTime?
+  dataRetentionUntil DateTime?
+  
+  // Relations
+  accounts          Account[]
+  sessions          Session[]
+  candidateProfile  CandidateProfile?
+  employerProfile   EmployerProfile?
+  
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// UK Job Market Data
+model UKJobCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  parentId    String?
+  parent      UKJobCategory? @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    UKJobCategory[] @relation("CategoryHierarchy")
+  jobs        JobPosting[]
+  createdAt   DateTime @default(now())
+  
+  @@map("uk_job_categories")
+}
+
+model UKSkill {
+  id                String   @id @default(cuid())
+  name              String   @unique
+  category          String
+  description       String?
+  ukDemandScore     Int      @default(50) // 1-100 scale for UK market
+  averageSalaryUK   Int?     // Annual salary in GBP
+  growthTrend       String   @default("stable") // declining, stable, growing, hot
+  createdAt         DateTime @default(now())
+  
+  // Relations
+  candidateSkills   CandidateSkill[]
+  jobRequirements   JobSkillRequirement[]
+  
+  @@map("uk_skills")
+}
+
+// Candidate Profiles
+model CandidateProfile {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Basic Info
+  headline              String?
+  summary               String?
+  location              String?
+  postcode              String?
+  willingToRelocate     Boolean  @default(false)
+  remotePreference      String   @default("hybrid") // onsite, remote, hybrid, no-preference
+  
+  // Employment
+  employmentStatus      String   @default("employed") // employed, unemployed, student, contractor
+  availability          String   @default("1-month") // immediate, 2-weeks, 1-month, 3-months
+  noticePeriod          String?  // UK-specific notice periods
+  
+  // Salary (GBP)
+  salaryExpectationMin  Int?
+  salaryExpectationMax  Int?
+  currentSalary         Int?
+  
+  // Experience
+  yearsOfExperience     Int      @default(0)
+  
+  // UK-specific
+  rightToWork           Boolean  @default(false)
+  visaStatus            String?
+  sponsorshipRequired   Boolean  @default(false)
+  
+  // AI Analysis
+  profileCompleteness   Int      @default(0) // 0-100
+  aiGeneratedSummary    String?
+  marketValueEstimate   Int?     // GBP
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  skills                CandidateSkill[]
+  workExperiences       WorkExperience[]
+  education             Education[]
+  applications          JobApplication[]
+  
+  @@map("candidate_profiles")
+}
+
+model CandidateSkill {
+  id              String   @id @default(cuid())
+  candidateId     String
+  skillId         String
+  proficiencyLevel String  @default("intermediate") // beginner, intermediate, advanced, expert
+  yearsExperience Float?
+  verified        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  
+  candidate       CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  skill           UKSkill          @relation(fields: [skillId], references: [id])
+  
+  @@unique([candidateId, skillId])
+  @@map("candidate_skills")
+}
+
+model WorkExperience {
+  id              String   @id @default(cuid())
+  candidateId     String
+  companyName     String
+  jobTitle        String
+  description     String?
+  startDate       DateTime
+  endDate         DateTime?
+  isCurrent       Boolean  @default(false)
+  location        String?
+  salaryGBP       Int?     // UK salary in GBP
+  
+  candidate       CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  
+  @@map("work_experiences")
+}
+
+model Education {
+  id              String   @id @default(cuid())
+  candidateId     String
+  institutionName String
+  degree          String?
+  fieldOfStudy    String?
+  grade           String?  // UK grading system
+  startDate       DateTime?
+  endDate         DateTime?
+  
+  candidate       CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  
+  @@map("education")
+}
+
+// Employer Profiles
+model EmployerProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  companyName       String
+  companySize       String   @default("small") // startup, small, medium, large, enterprise
+  industry          String?
+  description       String?
+  website           String?
+  location          String?
+  postcode          String?
+  
+  // UK-specific
+  companiesHouseNumber String? // UK company registration
+  vatNumber         String?
+  
+  verified          Boolean  @default(false)
+  subscriptionTier  String   @default("basic") // basic, professional, enterprise
+  creditsRemaining  Int      @default(10)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  jobPostings       JobPosting[]
+  
+  @@map("employer_profiles")
+}
+
+// Job Postings
+model JobPosting {
+  id                  String   @id @default(cuid())
+  employerId          String
+  categoryId          String?
+  
+  title               String
+  description         String
+  requirements        String
+  location            String?
+  postcode            String?
+  remoteType          String   @default("hybrid") // onsite, remote, hybrid
+  employmentType      String   @default("full-time") // full-time, part-time, contract, apprenticeship
+  
+  // Salary (GBP)
+  salaryMin           Int?
+  salaryMax           Int?
+  salaryType          String   @default("annual") // annual, daily, hourly
+  
+  // UK-specific
+  sponsorshipAvailable Boolean @default(false)
+  securityClearance   String?  // None, SC, DV, etc.
+  
+  // Application
+  applicationDeadline DateTime?
+  status              String   @default("draft") // draft, active, paused, closed, filled
+  
+  // AI Analysis
+  biasScore           Float?   // 0.0-1.0
+  complexityScore     Int?     // 1-10
+  marketCompetitiveness Float? // 0.0-1.0
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  
+  // Relations
+  employer            EmployerProfile @relation(fields: [employerId], references: [id], onDelete: Cascade)
+  category            UKJobCategory?  @relation(fields: [categoryId], references: [id])
+  skillRequirements   JobSkillRequirement[]
+  applications        JobApplication[]
+  auctions            Auction[]
+  
+  @@map("job_postings")
+}
+
+model JobSkillRequirement {
+  id              String   @id @default(cuid())
+  jobId           String
+  skillId         String
+  required        Boolean  @default(true) // true = required, false = preferred
+  minimumLevel    String   @default("intermediate")
+  
+  job             JobPosting @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skill           UKSkill    @relation(fields: [skillId], references: [id])
+  
+  @@unique([jobId, skillId])
+  @@map("job_skill_requirements")
+}
+
+// Applications
+model JobApplication {
+  id              String   @id @default(cuid())
+  jobId           String
+  candidateId     String
+  status          String   @default("applied") // applied, screening, interview, offer, rejected, hired
+  coverLetter     String?
+  expectedSalary  Int?     // GBP
+  availableFrom   DateTime?
+  
+  // AI Matching
+  matchScore      Float?   // 0.0-100.0
+  aiAnalysis      String?  // JSON string with detailed analysis
+  
+  appliedAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  job             JobPosting       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  candidate       CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  
+  @@unique([jobId, candidateId])
+  @@map("job_applications")
+}
+
+// Auction System
+model Auction {
+  id              String   @id @default(cuid())
+  jobId           String
+  type            String   // forward, reverse
+  title           String
+  description     String?
+  
+  startTime       DateTime
+  endTime         DateTime
+  status          String   @default("scheduled") // scheduled, active, completed, cancelled
+  
+  minimumBid      Int?     // GBP
+  currentHighBid  Int?     // GBP
+  totalBids       Int      @default(0)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  job             JobPosting @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  bids            Bid[]
+  
+  @@map("auctions")
+}
+
+model Bid {
+  id              String   @id @default(cuid())
+  auctionId       String
+  bidderId        String   // User ID of bidder
+  amount          Int      // GBP
+  message         String?
+  isWinning       Boolean  @default(false)
+  
+  createdAt       DateTime @default(now())
+  
+  auction         Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+  
+  @@map("bids")
+}
+
+// UK Market Intelligence
+model UKMarketData {
+  id              String   @id @default(cuid())
+  dataType        String   // salary_trend, skill_demand, hiring_velocity
+  region          String?  // London, Manchester, Edinburgh, etc.
+  industry        String?
+  skillId         String?
+  
+  metricName      String
+  metricValue     Float
+  metricUnit      String
+  trendDirection  String   @default("stable") // up, down, stable
+  
+  periodStart     DateTime
+  periodEnd       DateTime
+  dataSource      String
+  
+  createdAt       DateTime @default(now())
+  
+  @@map("uk_market_data")
+}
+
+// Enums
+enum UserType {
+  CANDIDATE
+  EMPLOYER
+  RECRUITER
+  ADMIN
+}
